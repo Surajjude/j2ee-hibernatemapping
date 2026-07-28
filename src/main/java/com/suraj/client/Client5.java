@@ -12,26 +12,30 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-public class Client4 {
+public class Client5 {
 	public static void main(String[] args) {
 		Configuration config = new Configuration();
 		config.configure();
 		
-		config.addAnnotatedClass(Passport.class);
-		config.addAnnotatedClass(Person.class);
+		config.addAnnotatedClass(Department.class);
+		config.addAnnotatedClass(Employee.class);
 		
 		SessionFactory sessionFactory = config.buildSessionFactory();
 		
 		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
 		
-		Passport passport = new Passport();
-		passport.setPassportNumber("IND12345");
+		Department d = new Department();
+		d.setDepartment("IT");
+		
+		Employee e1 = new Employee();
+		e1.setName("Suraj");
+		e1.setDepartment(d);
+		
+		d.getEmployee().add(e1);
 
-		Person person = new Person();
-		person.setName("Suraj");
-		person.setPassport(passport);
-
-		session.save(person);
+		session.save(d);
+		tx.commit();
 		
 		
 	}
